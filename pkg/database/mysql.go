@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/naeemjr06-prog/user-access-api/pkg/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -25,6 +26,11 @@ func Connect() {
 		log.Fatal("❌ Database connection failed:", err)
 	}
 
+	// Auto-migrate tables
+	if err := db.AutoMigrate(&models.User{}); err != nil {
+		log.Fatal("❌ Migration failed:", err)
+	}
+
 	DB = db
-	log.Println("✅ Connected to MySQL")
+	log.Println("✅ Connected & migrated MySQL")
 }
